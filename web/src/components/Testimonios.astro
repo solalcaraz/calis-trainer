@@ -1,0 +1,51 @@
+---
+import VerMas from './VerMas.astro';
+import type { Testimonio } from '../lib/tipos';
+
+interface Props {
+  testimonios: Testimonio[];
+}
+const { testimonios } = Astro.props;
+---
+
+{
+  testimonios.length > 0 && (
+    <section id="testimonios" class="seccion" aria-labelledby="titulo-testimonios">
+      <div class="contenedor">
+        <div class="seccion__cabecera">
+          <p class="label">Testimonios</p>
+          <h2 class="display-l" id="titulo-testimonios">Lo que dicen en el grupo</h2>
+        </div>
+        <ul class="testimonios" id="lista-testimonios" role="list">
+          {testimonios.map((t) => (
+            <li>
+              <figure class="testimonio">
+                <blockquote>
+                  <p>“{t.texto}”</p>
+                </blockquote>
+                <figcaption>
+                  <span class="testimonio__autor">{t.autor}</span>
+                  {t.contexto && <span class="small testimonio__contexto">{t.contexto}</span>}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+        <VerMas lista="lista-testimonios" limite={2} texto="Ver más testimonios" />
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .testimonios { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--space-8); }
+  .testimonios > li { display: flex; }
+  .testimonio {
+    flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);
+    padding: var(--space-6); background: var(--magnesio-alto); border: 1px solid var(--linea); border-top: 6px solid var(--granate);
+  }
+  .testimonio blockquote p { font-size: 19px; line-height: 30px; }
+  .testimonio figcaption { display: grid; gap: var(--space-1); }
+  .testimonio__autor { font-weight: 700; color: var(--granate-texto); }
+  .testimonio__contexto { color: var(--tinta-suave); }
+</style>

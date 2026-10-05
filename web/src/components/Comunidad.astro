@@ -1,0 +1,42 @@
+---
+import Foto from './Foto.astro';
+import type { ItemGaleria } from '../lib/tipos';
+
+interface Props {
+  items: ItemGaleria[];
+  instagram: string;
+}
+const { items, instagram } = Astro.props;
+const fotos = items.filter((i) => i.tipo === 'foto' && i.foto);
+---
+
+{
+  fotos.length > 0 && (
+    <section id="comunidad" class="seccion" aria-labelledby="titulo-comunidad">
+      <div class="contenedor">
+        <div class="seccion__cabecera">
+          <p class="label">Comunidad</p>
+          <h2 class="display-l" id="titulo-comunidad">Juntas somos más fuertes</h2>
+          <p class="body-l seccion__intro">Entrenar en grupo es parte del método: nos alentamos, nos corregimos y celebramos cada logro.</p>
+        </div>
+        <ul class="comunidad" role="list">
+          {fotos.map((f) => (
+            <li>
+              <Foto imagen={f.foto!} sizes="(max-width: 700px) 100vw, 50vw" />
+            </li>
+          ))}
+        </ul>
+        <a class="ct-btn ct-btn--secundario comunidad__ig" href={instagram} target="_blank" rel="noopener">
+          Seguí el día a día en Instagram
+        </a>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .comunidad { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .comunidad :global(img) { width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; }
+  .comunidad__ig { margin-top: var(--space-8); }
+  @media (max-width: 600px) { .comunidad { grid-template-columns: 1fr; } }
+</style>

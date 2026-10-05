@@ -1,0 +1,62 @@
+---
+import logo from '../assets/logos/calis-trainer-logo.svg';
+import logoNegativo from '../assets/logos/calis-trainer-logo-negativo.svg';
+import type { Ajustes } from '../lib/tipos';
+
+interface Props {
+  ajustes: Ajustes;
+  linkReserva: string;
+}
+const { ajustes, linkReserva } = Astro.props;
+const anio = new Date().getFullYear();
+const telefono = ajustes.whatsapp.replace(/^549(\d{2})(\d{4})(\d{4})$/, '+54 9 $1 $2-$3');
+---
+
+<footer class="pie">
+  <div class="contenedor pie__fila">
+    <div class="pie__marca">
+      <img class="logo-claro" src={logo.src} width="140" height="61" alt="Calis Trainer" />
+      <img class="logo-oscuro" src={logoNegativo.src} width="140" height="61" alt="Calis Trainer" />
+      <p class="small">Calistenia para mujeres en Caballito, CABA, y online.</p>
+    </div>
+    <ul class="pie__links" role="list">
+      <li><a href={linkReserva} target="_blank" rel="noopener">WhatsApp {telefono}</a></li>
+      <li><a href={ajustes.instagram} target="_blank" rel="noopener">Instagram @calis.trainer</a></li>
+      <li><a href={ajustes.lugar.mapaLink} target="_blank" rel="noopener">{ajustes.lugar.nombre}, {ajustes.lugar.zona}</a></li>
+    </ul>
+  </div>
+  <div class="contenedor pie__legal small">
+    <p>© {anio} Calis Trainer. Todos los derechos reservados.</p>
+    <a class="pie__firma" href="https://www.linkedin.com/in/maria-sol-alcaraz/" target="_blank" rel="noopener">
+      Hecho con fuerza y constancia por <strong>MSA</strong>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .pie { padding-block: var(--space-12) var(--space-8); border-top: 1px solid var(--linea); }
+  .pie__fila { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-8); }
+  .pie__marca { display: grid; gap: var(--space-3); }
+  .pie__marca img { width: 140px; height: auto; }
+  .pie__marca p { color: var(--tinta-suave); }
+  .pie__links { list-style: none; padding: 0; display: grid; gap: var(--space-3); }
+  .pie__links a { color: var(--tinta); font-weight: 700; text-decoration: none; transition: color .15s ease; }
+  @media (hover: hover) { .pie__links a:hover { color: var(--granate-texto); } }
+  .pie__legal {
+    margin-top: var(--space-8); color: var(--tinta-suave);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-8);
+  }
+  /* Firma de quien hizo la web: se nota que es un enlace (punteado suave y manito) sin competir con el contenido. */
+  .pie__firma {
+    color: inherit; cursor: pointer;
+    text-decoration: underline dotted 1px; text-decoration-color: var(--lila); text-underline-offset: 4px;
+    transition: color .15s ease, text-decoration-color .15s ease;
+  }
+  .pie__firma strong { color: var(--tinta); }
+  @media (max-width: 600px) {
+    .pie { padding-block: var(--space-8) var(--space-6); }
+    .pie__fila { gap: var(--space-6); }
+    .pie__legal { margin-top: var(--space-6); }
+  }
+  @media (hover: hover) { .pie__firma:hover { color: var(--tinta); text-decoration-color: var(--granate-texto); } }
+</style>

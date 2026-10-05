@@ -1,0 +1,69 @@
+---
+import Foto from './Foto.astro';
+import type { Inicio } from '../lib/tipos';
+
+interface Props {
+  inicio: Inicio;
+  linkReserva: string;
+}
+const { inicio, linkReserva } = Astro.props;
+---
+
+<section id="inicio" class="portada" aria-labelledby="titulo-portada">
+  <!-- Sin el logo del componente Hero: el encabezado fijo ya lo muestra justo arriba. -->
+  <div class="ct-hero ct-sobre-granate portada__bloque">
+    <p class="ct-hero__eyebrow">{inicio.antetitulo}</p>
+    <h1 class="ct-hero__titulo" id="titulo-portada">{inicio.titulo}</h1>
+    <p class="ct-hero__bajada">{inicio.bajada}</p>
+    <div class="ct-hero__acciones">
+      <a class="ct-btn ct-btn--primario" href={linkReserva} target="_blank" rel="noopener" data-cta-principal>
+        Quiero mi clase de prueba
+      </a>
+      <a class="ct-btn ct-btn--secundario" href="#donde">Ver horarios</a>
+    </div>
+    <p class="portada__nota small">Es gratis. Se abre WhatsApp con el mensaje listo y te respondo yo.</p>
+  </div>
+  <div class="portada__foto">
+    <Foto imagen={inicio.foto} sizes="(max-width: 860px) 100vw, 42vw" prioridad />
+  </div>
+</section>
+
+<style>
+  .portada {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    min-height: calc(100svh - var(--alto-encabezado));
+    background: var(--granate);
+  }
+  .portada__bloque {
+    padding: clamp(var(--space-8), 6vw, var(--space-20)) var(--margen);
+    padding-left: max(var(--margen), calc((100vw - var(--ancho-max)) / 2));
+    justify-content: center;
+    gap: var(--space-6);
+  }
+  .portada__foto { position: relative; min-height: 100%; }
+  .portada__foto :global(img) {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: 55% 50%;
+  }
+
+  /* Estilos del componente Hero del design system (se aplican a los hijos del bloque). */
+  .ct-hero{font-family:var(--font-body);display:flex;flex-direction:column;align-items:flex-start}
+  .ct-hero__eyebrow{margin:0;font-size:13px;line-height:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+  .ct-hero__titulo{margin:0;font-family:var(--font-display);font-weight:800;font-size:64px;line-height:1;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance;max-width:14ch}
+  .ct-hero__bajada{margin:0;font-size:19px;line-height:30px;max-width:48ch}
+  .ct-hero__acciones{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+  .portada__nota{margin-top:calc(-1 * var(--space-2));opacity:.85}
+
+  @media (max-width: 860px) {
+    .portada { grid-template-columns: 1fr; min-height: 0; }
+    .portada__bloque { padding: var(--space-8) var(--margen) var(--space-12); min-height: calc(100svh - var(--alto-encabezado)); }
+    /* Foto más baja que ancha: se ve, pero no obliga a scrollear una foto entera para seguir. */
+    .portada__foto { height: clamp(240px, 45svh, 420px); }
+  }
+  @media (max-width: 600px) {
+    .ct-hero__titulo { font-size: 40px; }
+    .ct-hero__acciones { width: 100%; }
+    .ct-hero__acciones .ct-btn { flex: 1 1 100%; }
+  }
+</style>

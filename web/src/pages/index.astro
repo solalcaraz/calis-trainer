@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Encabezado from '../components/Encabezado.astro';
+import Portada from '../components/Portada.astro';
+import SobreMi from '../components/SobreMi.astro';
+import Servicios from '../components/Servicios.astro';
+import ComoEmpezar from '../components/ComoEmpezar.astro';
+import PorQue from '../components/PorQue.astro';
+import Logros from '../components/Logros.astro';
+import Testimonios from '../components/Testimonios.astro';
+import Comunidad from '../components/Comunidad.astro';
+import Donde from '../components/Donde.astro';
+import Preguntas from '../components/Preguntas.astro';
+import LlamadoFinal from '../components/LlamadoFinal.astro';
+import Pie from '../components/Pie.astro';
+import BarraWhatsapp from '../components/BarraWhatsapp.astro';
+import { getContenido } from '../lib/contenido';
+import { linkWhatsapp } from '../lib/whatsapp';
+
+const contenido = await getContenido();
+const { ajustes } = contenido;
+const linkReserva = linkWhatsapp(ajustes.whatsapp, ajustes.mensajeBase);
+
+const titulo = 'Calis Trainer | Calistenia para mujeres en Caballito y online';
+const descripcion =
+  'Clases de calistenia con Johanna en Plaza Irlanda, Caballito, y online. Sin experiencia previa ni límite de edad. Reservá tu clase de prueba gratis por WhatsApp.';
+---
+
+<Base titulo={titulo} descripcion={descripcion} contenido={contenido}>
+  <Encabezado linkReserva={linkReserva} />
+  <main id="contenido">
+    <Portada inicio={contenido.inicio} linkReserva={linkReserva} />
+    <Logros items={contenido.galeria.filter((g) => g.categoria === 'logros')} />
+    <SobreMi sobreMi={contenido.sobreMi} />
+    <Servicios servicios={contenido.servicios} whatsapp={ajustes.whatsapp} lugar={ajustes.lugar.nombre} />
+    <ComoEmpezar progresion={contenido.progresion} linkReserva={linkReserva} />
+    <PorQue />
+    <Testimonios testimonios={contenido.testimonios} />
+    <Comunidad items={contenido.galeria.filter((g) => g.categoria === 'comunidad')} instagram={ajustes.instagram} />
+    <Donde ajustes={ajustes} servicios={contenido.servicios} />
+    <Preguntas preguntas={contenido.preguntas} />
+    <LlamadoFinal linkReserva={linkReserva} />
+  </main>
+  <Pie ajustes={ajustes} linkReserva={linkReserva} />
+  <BarraWhatsapp linkReserva={linkReserva} />
+</Base>

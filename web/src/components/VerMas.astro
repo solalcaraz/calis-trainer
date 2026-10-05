@@ -1,0 +1,60 @@
+---
+/**
+ * En celular muestra solo los primeros `limite` elementos de una lista y agrega un botón para ver el resto.
+ * Sin JavaScript, o en pantallas más grandes, la lista se ve completa.
+ */
+interface Props {
+  /** id de la lista (<ul>) que controla */
+  lista: string;
+  limite: number;
+  texto: string;
+}
+const { lista, limite, texto } = Astro.props;
+---
+
+<button class="ver-mas" type="button" aria-controls={lista} aria-expanded="false" data-ver-mas data-limite={limite} data-texto={texto} hidden>
+  <span data-ver-mas-texto>{texto}</span>
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg>
+</button>
+
+<style>
+  .ver-mas {
+    display: none; align-items: center; justify-content: center; gap: var(--space-2);
+    width: 100%; min-height: 48px; margin-top: var(--space-4);
+    background: transparent; color: var(--granate-texto); border: 1px solid var(--linea); border-radius: var(--radius-0);
+    font: inherit; font-weight: 700; cursor: pointer;
+  }
+  .ver-mas svg { transition: transform .2s ease; }
+  .ver-mas[aria-expanded='true'] svg { transform: rotate(180deg); }
+  @media (max-width: 600px) { .ver-mas:not([hidden]) { display: flex; } }
+  @media (prefers-reduced-motion: reduce) { .ver-mas svg { transition: none; } }
+
+  @media (max-width: 600px) {
+    :global([data-colapsado] > .ver-mas__extra) { display: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-ver-mas]').forEach((boton) => {
+    const lista = document.getElementById(boton.getAttribute('aria-controls') ?? '');
+    const limite = Number(boton.dataset.limite);
+    if (!lista) return;
+    const extras = Array.from(lista.children).slice(limite);
+    if (extras.length === 0) return;
+
+    extras.forEach((el) => el.classList.add('ver-mas__extra'));
+    lista.toggleAttribute('data-colapsado', true);
+    const etiqueta = boton.querySelector('[data-ver-mas-texto]')!;
+    etiqueta.textContent = `${boton.dataset.texto} (${extras.length})`;
+    boton.hidden = false;
+
+    boton.addEventListener('click', () => {
+      const abrir = lista.hasAttribute('data-colapsado');
+      lista.toggleAttribute('data-colapsado', !abrir);
+      boton.setAttribute('aria-expanded', String(abrir));
+      etiqueta.textContent = abrir ? 'Ver menos' : `${boton.dataset.texto} (${extras.length})`;
+      // Al cerrar, volver al principio de la lista para no quedar perdida más abajo.
+      if (!abrir) lista.scrollIntoView({ block: 'start' });
+    });
+  });
+</script>

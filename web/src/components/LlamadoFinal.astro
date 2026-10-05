@@ -1,0 +1,32 @@
+---
+interface Props {
+  linkReserva: string;
+}
+const { linkReserva } = Astro.props;
+---
+
+<section class="llamado ct-sobre-granate" aria-labelledby="titulo-llamado">
+  <div class="contenedor llamado__contenido">
+    <p class="label llamado__label">Tu clase de prueba</p>
+    <h2 class="display-l" id="titulo-llamado">Empezá desde donde estás hoy</h2>
+    <p class="body-l">Escribime por WhatsApp, contame qué te interesa y coordinamos tu primera clase.</p>
+    <div class="llamado__acciones">
+      <a class="ct-btn ct-btn--primario" href={linkReserva} target="_blank" rel="noopener" data-cta-principal>Quiero mi clase de prueba</a>
+    </div>
+    <p class="small llamado__nota">Es gratis. Se abre WhatsApp con el mensaje listo y te respondo yo.</p>
+  </div>
+</section>
+
+<style>
+  .llamado { padding-block: var(--seccion); }
+  .llamado__contenido { display: grid; gap: var(--space-6); justify-items: start; }
+  .llamado__label { color: var(--on-granate); opacity: .85; }
+  .llamado .display-l { max-width: 18ch; }
+  .llamado .body-l { max-width: 48ch; }
+  .llamado__nota { opacity: .85; margin-top: calc(-1 * var(--space-3)); }
+  .llamado__acciones { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+  @media (max-width: 600px) {
+    .llamado__acciones { width: 100%; }
+    .llamado__acciones .ct-btn { flex: 1 1 100%; }
+  }
+</style>

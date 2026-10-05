@@ -1,0 +1,132 @@
+---
+import logo from '../assets/logos/calis-trainer-logo.svg';
+import logoNegativo from '../assets/logos/calis-trainer-logo-negativo.svg';
+
+interface Props {
+  linkReserva: string;
+}
+const { linkReserva } = Astro.props;
+
+const enlaces = [
+  { href: '#logros', texto: 'Logros' },
+  { href: '#servicios', texto: 'Clases' },
+  { href: '#como-empezar', texto: 'Cómo empezar' },
+  { href: '#donde', texto: 'Horarios' },
+  { href: '#preguntas', texto: 'Preguntas' },
+];
+---
+
+<header class="encabezado">
+  <div class="contenedor encabezado__fila">
+    <a class="encabezado__logo" href="#inicio" aria-label="Calis Trainer, ir al inicio">
+      <img class="logo-claro" src={logo.src} width="132" height="58" alt="" />
+      <img class="logo-oscuro" src={logoNegativo.src} width="132" height="58" alt="" />
+    </a>
+
+    <nav class="encabezado__nav" aria-label="Principal">
+      <ul>
+        {enlaces.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="encabezado__acciones">
+      <button class="tema" type="button" aria-label="Cambiar a modo oscuro" data-boton-tema>
+        <svg class="tema__luna" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20.7 14.4A8.5 8.5 0 0 1 9.6 3.3a.75.75 0 0 0-1-.9A10 10 0 1 0 21.6 15.4a.75.75 0 0 0-.9-1Z"/></svg>
+        <svg class="tema__sol" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      </button>
+      <a class="ct-btn ct-btn--secundario encabezado__reserva" href={linkReserva} target="_blank" rel="noopener">Reservá tu clase de prueba</a>
+
+      <details class="menu-movil">
+        <summary aria-label="Abrir menú">Menú</summary>
+        <ul>
+          {enlaces.map((e) => <li><a href={e.href}>{e.texto}</a></li>)}
+        </ul>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .encabezado {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--magnesio);
+    border-bottom: 1px solid var(--linea);
+  }
+  .encabezado__fila { display: flex; align-items: center; gap: var(--space-6); min-height: 72px; }
+  .encabezado__logo { display: block; flex-shrink: 0; }
+  .encabezado__logo img { width: 132px; height: auto; }
+
+  .encabezado__nav { margin-inline: auto; }
+  .encabezado__nav ul { display: flex; gap: var(--space-6); list-style: none; padding: 0; }
+  .encabezado__nav a, .menu-movil a { color: var(--tinta); text-decoration: none; font-weight: 700; font-size: 15px; }
+  .encabezado__nav a:hover { color: var(--granate-texto); text-decoration: underline; }
+
+  .encabezado__acciones { display: flex; align-items: center; gap: var(--space-3); margin-left: auto; }
+  .encabezado__nav + .encabezado__acciones { margin-left: 0; }
+  .encabezado__reserva { min-height: 44px; padding-block: var(--space-2); font-size: 15px; }
+
+  .tema {
+    display: grid; place-items: center; width: 44px; height: 44px;
+    background: transparent; color: var(--tinta); border: 1px solid var(--linea); border-radius: var(--radius-0); cursor: pointer;
+  }
+  .tema:hover { border-color: var(--tinta); }
+  .tema__sol { display: none; }
+  :global(:root[data-tema='oscuro']) .tema__luna { display: none; }
+  :global(:root[data-tema='oscuro']) .tema__sol { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-tema='claro'])) .tema__luna { display: none; }
+    :global(:root:not([data-tema='claro'])) .tema__sol { display: block; }
+  }
+
+  .menu-movil { display: none; position: relative; }
+  .menu-movil summary {
+    list-style: none; cursor: pointer; min-height: 44px; display: grid; place-items: center;
+    padding-inline: var(--space-4); border: 1px solid var(--linea); font-weight: 700; font-size: 15px;
+  }
+  .menu-movil summary::-webkit-details-marker { display: none; }
+  .menu-movil[open] summary { border-color: var(--tinta); }
+  .menu-movil ul {
+    position: absolute; right: 0; top: calc(100% + var(--space-2)); min-width: 220px;
+    list-style: none; padding: var(--space-2) 0; background: var(--magnesio-alto); border: 1px solid var(--linea);
+  }
+  .menu-movil li a { display: block; padding: var(--space-3) var(--space-6); }
+
+  @media (max-width: 960px) {
+    .encabezado__nav { display: none; }
+    .encabezado__nav + .encabezado__acciones { margin-left: auto; }
+    .menu-movil { display: block; }
+  }
+  @media (max-width: 600px) {
+    .encabezado__reserva { display: none; }
+    .encabezado__logo img { width: 120px; }
+  }
+</style>
+
+<script>
+  const raiz = document.documentElement;
+  const oscuroSistema = window.matchMedia('(prefers-color-scheme: dark)');
+  const temaActual = () => raiz.dataset.tema ?? (oscuroSistema.matches ? 'oscuro' : 'claro');
+
+  function actualizarBotones() {
+    const actual = temaActual();
+    document.querySelectorAll<HTMLButtonElement>('[data-boton-tema]').forEach((b) => {
+      b.setAttribute('aria-label', actual === 'oscuro' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-boton-tema]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const nuevo = temaActual() === 'oscuro' ? 'claro' : 'oscuro';
+      raiz.dataset.tema = nuevo;
+      try { localStorage.setItem('tema', nuevo); } catch {}
+      actualizarBotones();
+    }),
+  );
+  oscuroSistema.addEventListener('change', actualizarBotones);
+  actualizarBotones();
+
+  // Cerrar el menú móvil al elegir una sección.
+  document.querySelectorAll<HTMLAnchorElement>('.menu-movil a').forEach((a) =>
+    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')),
+  );
+</script>

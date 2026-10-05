@@ -1,0 +1,71 @@
+---
+import type { Ajustes, Servicio } from '../lib/tipos';
+
+interface Props {
+  ajustes: Ajustes;
+  servicios: Servicio[];
+}
+const { ajustes, servicios } = Astro.props;
+const conHorarios = servicios.filter((s) => s.horarios && s.horarios.length > 0);
+---
+
+<section id="donde" class="seccion" aria-labelledby="titulo-donde">
+  <div class="contenedor donde">
+    <div class="seccion__cabecera donde__cabecera">
+      <p class="label">Dónde y cuándo</p>
+      <h2 class="display-l" id="titulo-donde">Entrenamos al aire libre</h2>
+    </div>
+
+    <div class="donde__info">
+      <p class="h3 donde__lugar">{ajustes.lugar.nombre}</p>
+      <p>{ajustes.lugar.zona}</p>
+      <a href={ajustes.lugar.mapaLink} target="_blank" rel="noopener">Cómo llegar en Google Maps</a>
+
+      <dl class="horarios">
+        {
+          conHorarios.map((s) => (
+            <div>
+              <dt>{s.nombre}</dt>
+              {s.horarios!.map((h) => <dd>{h}</dd>)}
+            </div>
+          ))
+        }
+        <div>
+          <dt>Online y personalizadas</dt>
+          <dd>Horarios a coordinar por WhatsApp</dd>
+        </div>
+      </dl>
+    </div>
+
+    <iframe
+      class="donde__mapa"
+      src={ajustes.lugar.mapaEmbed}
+      title={`Mapa de ${ajustes.lugar.nombre}, ${ajustes.lugar.zona}`}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+</section>
+
+<style>
+  .donde {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--space-12);
+    grid-template-areas: "cabecera mapa" "info mapa"; grid-template-rows: auto 1fr; align-items: start;
+  }
+  .donde__cabecera { grid-area: cabecera; margin-bottom: var(--space-8); }
+  .donde__info { grid-area: info; }
+  .donde__lugar { color: var(--granate-texto); }
+  .donde__info > a { display: inline-block; margin-top: var(--space-2); font-weight: 700; }
+  .horarios { margin: var(--space-8) 0 0; display: grid; gap: var(--space-6); }
+  .horarios dt { font-weight: 700; }
+  .horarios dd { margin: 0; color: var(--tinta); }
+  .donde__mapa { grid-area: mapa; width: 100%; aspect-ratio: 1; border: 1px solid var(--linea); }
+  @media (max-width: 860px) {
+    .donde { grid-template-areas: "cabecera cabecera" "info mapa"; column-gap: var(--space-8); }
+    .donde__mapa { aspect-ratio: auto; align-self: stretch; min-height: 320px; }
+  }
+  @media (max-width: 600px) {
+    .donde { grid-template-columns: 1fr; grid-template-areas: "cabecera" "info" "mapa"; row-gap: var(--space-8); }
+    .donde__mapa { align-self: start; aspect-ratio: 4 / 3; min-height: 0; }
+  }
+</style>

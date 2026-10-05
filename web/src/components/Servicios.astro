@@ -1,0 +1,116 @@
+---
+import { linkWhatsapp } from '../lib/whatsapp';
+import type { Servicio } from '../lib/tipos';
+
+interface Props {
+  servicios: Servicio[];
+  whatsapp: string;
+  lugar: string;
+}
+const { servicios, whatsapp, lugar } = Astro.props;
+
+// Los servicios se agrupan por cómo se entrena: así se entiende de un vistazo qué es presencial, online o 1 a 1.
+const grupos = [
+  { id: 'plaza', titulo: 'En la plaza', bajada: `Al aire libre y en grupo, en ${lugar}.` },
+  { id: 'online', titulo: 'Online', bajada: 'Desde tu casa, en tus horarios.' },
+  { id: 'medida', titulo: 'A tu medida', bajada: 'Un plan pensado para tu objetivo.' },
+]
+  .map((g) => ({ ...g, servicios: servicios.filter((s) => (s.grupo ?? 'medida') === g.id) }))
+  .filter((g) => g.servicios.length > 0);
+
+// "Clases online" → "clases online"; los nombres propios ("Flex Consciente") quedan igual.
+const enFrase = (nombre: string) => (/\s[A-ZÁÉÍÓÚÑ]/.test(nombre) ? nombre : nombre.charAt(0).toLowerCase() + nombre.slice(1));
+---
+
+<section id="servicios" class="seccion" aria-labelledby="titulo-servicios">
+  <div class="contenedor">
+    <div class="seccion__cabecera">
+      <p class="label">Clases</p>
+      <h2 class="display-l" id="titulo-servicios">Elegí cómo entrenar</h2>
+      <p class="body-l seccion__intro">En la plaza, online o a tu medida. Todas las propuestas te acompañan desde tu nivel hasta tu próximo reto.</p>
+    </div>
+
+    <div class="grupos">
+      {
+        grupos.map((g) => (
+          <section class="grupo" aria-labelledby={`grupo-${g.id}`}>
+            <div class="grupo__cabecera">
+              <h3 class="h2" id={`grupo-${g.id}`}>{g.titulo}</h3>
+              <p class="grupo__bajada">{g.bajada}</p>
+            </div>
+            <ul class="grupo__servicios" role="list">
+              {g.servicios.map((s) => (
+                <li>
+                  <article class:list={['servicio', s.destacado && 'servicio--destacado ct-sobre-granate']} id={`servicio-${s.id}`}>
+                    <div class="servicio__titulo">
+                      <h4 class="h3">{s.nombre}</h4>
+                      {s.etiquetas.length > 0 && (
+                        <ul class="ct-tags" aria-label="Características">
+                          {s.etiquetas.map((t) => <li class="ct-tag">{t}</li>)}
+                        </ul>
+                      )}
+                    </div>
+                    <p>{s.resumen}</p>
+                    {s.dato && <p class="small servicio__dato">{s.dato}</p>}
+                    {/* Un solo botón fuerte (el servicio destacado); el resto, enlaces que dicen a qué llevan. */}
+                    {s.destacado ? (
+                      <a class="ct-btn ct-btn--primario" href={linkWhatsapp(whatsapp, s.mensajeWhatsapp)} target="_blank" rel="noopener">
+                        Quiero mi clase de prueba
+                      </a>
+                    ) : (
+                      <a class="accion" href={linkWhatsapp(whatsapp, s.mensajeWhatsapp)} target="_blank" rel="noopener">
+                        Consultá por {enFrase(s.nombre)}
+                      </a>
+                    )}
+                  </article>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+    <p class="servicios__nota small">Los valores dependen de la modalidad y la frecuencia. Consultalos por WhatsApp.</p>
+  </div>
+</section>
+
+<style>
+  .grupos { display: grid; }
+  .grupo {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-12);
+    padding-block: var(--space-12); border-top: 2px solid var(--granate-texto);
+  }
+  .grupo:first-child { padding-top: var(--space-8); }
+  /* El título del grupo acompaña mientras se recorren sus servicios. */
+  .grupo__cabecera {
+    display: grid; gap: var(--space-2); align-content: start;
+    position: sticky; top: calc(var(--alto-encabezado) + var(--space-6));
+  }
+  .grupo__cabecera .h2 { color: var(--granate-texto); }
+  .grupo__bajada { color: var(--tinta-suave); max-width: 32ch; }
+
+  .grupo__servicios { list-style: none; padding: 0; display: grid; }
+  .grupo__servicios > li + li { border-top: 1px solid var(--linea); }
+
+  .servicio { display: grid; gap: var(--space-3); justify-items: start; padding-block: var(--space-6); }
+  .grupo__servicios > li:first-child .servicio:not(.servicio--destacado) { padding-top: 0; }
+  .servicio p { max-width: 60ch; }
+  .servicio__titulo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .servicio__titulo .ct-tags { gap: var(--space-1); }
+  .servicio__dato { color: var(--tinta-suave); }
+  .servicio .accion { margin-top: calc(-1 * var(--space-2)); }
+
+  /* El servicio destacado es el único bloque lleno de la sección: ahí se detiene la mirada. */
+  .servicio--destacado { padding: var(--space-8); margin-bottom: var(--space-6); }
+  .servicio--destacado .servicio__dato { color: var(--on-granate); opacity: .85; }
+  .servicio--destacado .ct-tag { background: color-mix(in srgb, var(--on-granate) 16%, transparent); color: var(--on-granate); }
+  .grupo__servicios > li:has(.servicio--destacado) + li { border-top: 0; }
+
+  .servicios__nota { margin-top: var(--space-4); color: var(--tinta); }
+
+  @media (max-width: 860px) {
+    .grupo { grid-template-columns: 1fr; gap: var(--space-6); padding-block: var(--space-8); }
+    .grupo__cabecera { position: static; }
+    .servicio--destacado { padding: var(--space-6); }
+  }
+</style>

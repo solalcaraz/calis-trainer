@@ -1,0 +1,41 @@
+---
+interface Props {
+  linkReserva: string;
+}
+const { linkReserva } = Astro.props;
+---
+
+<!-- Botón fijo en celular. Se oculta mientras el botón principal de la portada o del cierre está en pantalla,
+     para que nunca haya dos llamados principales visibles a la vez, y también en el pie, que ya tiene el WhatsApp.
+     Por eso no hace falta reservarle espacio al final de la página. -->
+<div class="barra" data-barra-whatsapp>
+  <a class="ct-btn ct-btn--primario" href={linkReserva} target="_blank" rel="noopener">Quiero mi clase de prueba</a>
+</div>
+
+<style>
+  .barra { display: none; }
+  @media (max-width: 700px) {
+    .barra {
+      display: block; position: fixed; inset: auto 0 0 0; z-index: 40;
+      padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+      background: var(--magnesio); border-top: 1px solid var(--linea);
+      transform: translateY(0); transition: transform .2s ease;
+    }
+    .barra .ct-btn { width: 100%; }
+    .barra[data-oculta] { transform: translateY(110%); visibility: hidden; }
+  }
+  @media (prefers-reduced-motion: reduce) { .barra { transition: none; } }
+</style>
+
+<script>
+  const barra = document.querySelector<HTMLElement>('[data-barra-whatsapp]');
+  const principales = document.querySelectorAll('[data-cta-principal], footer');
+  if (barra && principales.length && 'IntersectionObserver' in window) {
+    const visibles = new Set<Element>();
+    const obs = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => (e.isIntersecting ? visibles.add(e.target) : visibles.delete(e.target)));
+      barra.toggleAttribute('data-oculta', visibles.size > 0);
+    });
+    principales.forEach((p) => obs.observe(p));
+  }
+</script>

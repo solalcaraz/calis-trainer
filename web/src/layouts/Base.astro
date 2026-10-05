@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import type { Contenido } from '../lib/tipos';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  contenido: Contenido;
+}
+
+const { titulo, descripcion, contenido } = Astro.props;
+const { ajustes, inicio } = contenido;
+const url = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const imagenOg = Astro.site ? new URL(inicio.foto.src, Astro.site).href : undefined;
+
+const datosEstructurados = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsActivityLocation',
+  name: 'Calis Trainer',
+  description: descripcion,
+  ...(url && { url }),
+  ...(imagenOg && { image: imagenOg }),
+  telephone: `+${ajustes.whatsapp}`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: ajustes.lugar.nombre,
+    addressLocality: ajustes.lugar.zona,
+    addressCountry: 'AR',
+  },
+  sameAs: [ajustes.instagram],
+};
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    {url && <link rel="canonical" href={url} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#7A1E48" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    {url && <meta property="og:url" content={url} />}
+    {imagenOg && <meta property="og:image" content={imagenOg} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" href="/fonts/ArchivoExpanded-ExtraBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/AtkinsonHyperlegibleNext-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Aplica el tema elegido antes de pintar, para que no parpadee. -->
+    <script is:inline>
+      try {
+        const tema = localStorage.getItem('tema');
+        if (tema === 'claro' || tema === 'oscuro') document.documentElement.dataset.tema = tema;
+      } catch {}
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(datosEstructurados)} />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>

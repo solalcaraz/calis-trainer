@@ -1,0 +1,36 @@
+---
+import Foto from './Foto.astro';
+import type { SobreMi } from '../lib/tipos';
+
+interface Props {
+  sobreMi: SobreMi;
+}
+const { sobreMi } = Astro.props;
+---
+
+<section id="sobre-mi" class="seccion" aria-labelledby="titulo-sobre-mi">
+  <div class="contenedor sobre-mi">
+    <div class="sobre-mi__foto">
+      <Foto imagen={sobreMi.foto} sizes="(max-width: 860px) 100vw, 40vw" />
+    </div>
+    <div class="sobre-mi__texto">
+      <p class="label">Quién te entrena</p>
+      <h2 class="display-l" id="titulo-sobre-mi">La edad no es un límite, es un desafío</h2>
+      {sobreMi.parrafos.map((p, i) => <p class={i === 0 ? 'body-l' : undefined}>{p}</p>)}
+      <p class="sobre-mi__firma">Johanna, entrenadora de calistenia</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sobre-mi { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-12); align-items: center; }
+  .sobre-mi__foto :global(img) { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .sobre-mi__texto { display: grid; gap: var(--space-4); max-width: 62ch; }
+  .sobre-mi__texto .display-l { margin-bottom: var(--space-4); }
+  .sobre-mi__firma { font-weight: 700; color: var(--granate-texto); }
+  @media (max-width: 860px) {
+    .sobre-mi { grid-template-columns: 1fr; gap: var(--space-8); }
+    .sobre-mi__foto { order: 2; }
+    .sobre-mi__foto :global(img) { aspect-ratio: 3 / 2; object-position: 50% 72%; }
+  }
+</style>

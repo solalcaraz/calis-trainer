@@ -1,0 +1,34 @@
+---
+// Los valores de marca salen del design system; no se editan desde el admin.
+const razones = [
+  { titulo: 'Fuerza sin edad', texto: 'Arrancás desde donde estás. No importa tu edad ni si nunca te colgaste de una barra.' },
+  { titulo: 'Progreso que se ve', texto: 'Medimos logros concretos: tu primera dominada, una repetición más, una vertical. Nada de hablar de peso ni de talles.' },
+  { titulo: 'Siempre un reto más', texto: 'Cuando lográs algo, ya hay un próximo desafío. Y si querés competir, te preparamos.' },
+  { titulo: 'Juntas', texto: 'Entrenamos en grupo y cada logro se celebra como propio. Nadie se queda atrás.' },
+];
+---
+
+<section id="por-que" class="seccion" aria-labelledby="titulo-por-que">
+  <div class="contenedor">
+    <div class="seccion__cabecera">
+      <p class="label">Por qué entrenar conmigo</p>
+      <h2 class="display-l" id="titulo-por-que">Así entrenamos</h2>
+    </div>
+    <ul class="razones" role="list">
+      {
+        razones.map((r) => (
+          <li class="razon">
+            <h3 class="h3">{r.titulo}</h3>
+            <p>{r.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .razones { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-8); }
+  .razon { display: grid; gap: var(--space-3); align-content: start; padding: var(--space-6); background: var(--magnesio-alto); border: 1px solid var(--linea); }
+  .razon .h3 { color: var(--granate-texto); }
+</style>

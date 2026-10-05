@@ -1,0 +1,153 @@
+{
+  "_nota": "Contenido inicial. Se usa cuando Sanity no está configurado y como fuente para cargar Sanity la primera vez (studio/scripts/seed.ts). Las fotos se referencian por nombre de archivo dentro de src/assets/media y los videos dentro de public/media/videos.",
+  "ajustes": {
+    "whatsapp": "5491112345678",
+    "mensajeBase": "Hola Joha! Quiero reservar una clase de prueba.",
+    "instagram": "https://www.instagram.com/calis.trainer/",
+    "lugar": {
+      "nombre": "Plaza Irlanda",
+      "zona": "Caballito, CABA",
+      "mapaEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.584683211313!2d-58.46044252517908!3d-34.6146621729504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca1ea91fd4cf%3A0xbaee7969a08f24df!2sPlaza%20Irlanda!5e0!3m2!1ses-419!2sar!4v1759764966307!5m2!1ses-419!2sar",
+      "mapaLink": "https://www.google.com/maps/search/?api=1&query=Plaza+Irlanda+Caballito"
+    }
+  },
+  "inicio": {
+    "antetitulo": "Calistenia para mujeres · CABA y online",
+    "titulo": "Fuerza a cualquier edad",
+    "bajada": "Empezás desde donde estás hoy, sin experiencia previa. Tu primera dominada la hacemos juntas.",
+    "foto": { "archivo": "portada.jpg", "alt": "Johanna haciendo una vertical sobre las salinas, con el cielo azul de fondo" }
+  },
+  "sobreMi": {
+    "parrafos": [
+      "“Soy muy grande”, “ya no es para mí”, “pasó mi época”. Escuché esas frases mil veces, y también me las dije a mí misma.",
+      "En 2021 llegué a la calistenia y me cambió la vida. Me desafió, me enamoró y, con constancia, me mostró todo lo que podía lograr física y mentalmente.",
+      "En el camino descubrí que me encanta enseñar, y desde 2022 doy clases. Con cada alumna que se anima lo comprobamos juntas. Todas pueden lograrlo, a su ritmo y sin presiones.",
+      "La clave no está en la edad ni en el talento, está en la constancia. Hoy veo a quienes pasaron por mis clases y ya no son las mismas. Cambiaron su forma de entrenar, de pensar y de verse capaces, y eso es lo que me mueve."
+    ],
+    "foto": { "archivo": "sobre-mi.jpg", "alt": "Johanna con su grupo de alumnas después de una clase nocturna" }
+  },
+  "progresion": {
+    "titulo": "Camino a tu primera dominada",
+    "pasos": ["Colgarte de la barra", "Retracción escapular", "Dominada con banda", "Negativas", "Dominada completa"]
+  },
+  "servicios": [
+    {
+      "id": "presencial",
+      "nombre": "Clases grupales presenciales",
+      "grupo": "plaza",
+      "etiquetas": ["Todos los niveles"],
+      "resumen": "Entrenamos juntas al aire libre. Cada ejercicio tiene una progresión, así que arrancás desde tu nivel: tu primera vez o avanzada.",
+      "dato": "Clases de 1 h · Plaza Irlanda",
+      "horarios": ["Lunes de 18:30 a 21:00", "Miércoles de 19:00 a 21:00", "Viernes de 18:30 a 21:00"],
+      "mensajeWhatsapp": "Hola Joha! Quiero reservar una clase de prueba en las clases grupales presenciales.",
+      "destacado": true
+    },
+    {
+      "id": "online",
+      "nombre": "Clases online",
+      "grupo": "online",
+      "etiquetas": [],
+      "resumen": "Entrenás desde tu casa con un plan personalizado, videos explicativos y una llamada de seguimiento por semana.",
+      "dato": "Plan de 4 semanas",
+      "mensajeWhatsapp": "Hola Joha! Quiero reservar una clase de prueba de las clases online."
+    },
+    {
+      "id": "personalizadas",
+      "nombre": "Clases personalizadas",
+      "grupo": "medida",
+      "etiquetas": ["1 a 1"],
+      "resumen": "Sesiones individuales adaptadas a tus objetivos, de calistenia o fitness integral, con corrección y devolución directa.",
+      "dato": "Clases de 1 h · horario a coordinar",
+      "mensajeWhatsapp": "Hola Joha! Quiero reservar una clase personalizada."
+    },
+    {
+      "id": "flex",
+      "nombre": "Flex Consciente",
+      "grupo": "plaza",
+      "etiquetas": ["Movilidad"],
+      "resumen": "Movilidad, postura y liberación de tensiones con movimientos suaves y controlados. Complementa la calistenia y la damos junto a una profe especializada en movilidad.",
+      "dato": "Clases de 1 h · Plaza Irlanda",
+      "horarios": ["Viernes a las 21:00"],
+      "mensajeWhatsapp": "Hola Joha! Quiero reservar una clase de prueba de Flex Consciente."
+    },
+    {
+      "id": "gimnasio",
+      "nombre": "Rutinas de gimnasio",
+      "grupo": "medida",
+      "etiquetas": [],
+      "resumen": "Si entrenás en un gimnasio, te armo una rutina de fuerza con objetivos claros y progresiones para que sepas qué hacer cada día.",
+      "mensajeWhatsapp": "Hola Joha! Quiero consultar por las rutinas de gimnasio."
+    },
+    {
+      "id": "competencia",
+      "nombre": "Preparación para competencias",
+      "grupo": "medida",
+      "etiquetas": [],
+      "resumen": "Si querés competir en calistenia, preparamos juntas la técnica y la fuerza que pide cada prueba.",
+      "mensajeWhatsapp": "Hola Joha! Quiero consultar por la preparación para competencias."
+    }
+  ],
+  "testimonios": [
+    {
+      "texto": "Gracias por transmitirnos siempre esa energía motivadora y ayudarnos a ser cada día un poco más fuertes en mente y cuerpo. Y gracias al equipo de compañeras también.",
+      "autor": "Alumna",
+      "contexto": "Alumna del grupo presencial"
+    },
+    {
+      "texto": "Estoy súper feliz y orgulloso de todo lo que logramos este año. Gracias por siempre creer en mí.",
+      "autor": "Alumno",
+      "contexto": "Alumno del grupo presencial"
+    },
+    {
+      "texto": "Esto no era una cuestión de fuerza, sino de superar nuestros propios miedos. Y Joha siempre ahí, acompañando sin presionar pero convencida de cuánto podemos dar.",
+      "autor": "Compañera del grupo",
+      "contexto": "Sobre el logro de un compañero"
+    }
+  ],
+  "galeria": [
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-2.mp4", "poster": "logro-video-2-poster.jpg", "alt": "Alumnas colgadas de la barra trabajando dominadas" },
+    { "categoria": "logros", "tipo": "foto", "archivo": "logro-1.jpg", "alt": "Alumna invertida en las anillas" },
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-4.mp4", "poster": "logro-video-4-poster.jpg", "alt": "Alumna haciendo una vertical con ayuda de una compañera" },
+    { "categoria": "logros", "tipo": "foto", "archivo": "logro-3.jpg", "alt": "Alumna en vertical apoyada en las barras bajas" },
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-1.mp4", "poster": "logro-video-1-poster.jpg", "alt": "Alumna invertida en las barras paralelas bajas" },
+    { "categoria": "logros", "tipo": "foto", "archivo": "logro-2.jpg", "alt": "Alumna en vertical asistida en la plaza" },
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-3.mp4", "poster": "logro-video-3-poster.jpg", "alt": "Alumna trabajando en la barra en una clase nocturna" },
+    { "categoria": "logros", "tipo": "foto", "archivo": "logro-4.jpg", "alt": "Alumna en vertical sobre las barras" },
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-5.mp4", "poster": "logro-video-5-poster.jpg", "alt": "Alumna haciendo un ejercicio de empuje en las barras" },
+    { "categoria": "logros", "tipo": "video", "video": "logro-video-6.mp4", "poster": "logro-video-6-poster.jpg", "alt": "Alumnas haciendo ejercicios en el piso de la plaza" },
+    { "categoria": "comunidad", "tipo": "foto", "archivo": "comunidad-1.jpg", "alt": "Grupo de alumnas en la plaza después de entrenar" },
+    { "categoria": "comunidad", "tipo": "foto", "archivo": "comunidad-2.jpg", "alt": "Alumnas sentadas en las barras, sonriendo, en una clase de noche" },
+    { "categoria": "comunidad", "tipo": "foto", "archivo": "comunidad-3.jpg", "alt": "Foto grupal del equipo en la plaza de noche" },
+    { "categoria": "comunidad", "tipo": "foto", "archivo": "comunidad-4.jpg", "alt": "El grupo reunido junto a las barras de la plaza" }
+  ],
+  "preguntas": [
+    {
+      "pregunta": "¿Necesito experiencia previa?",
+      "respuesta": "No. La mayoría de las alumnas arrancó sin haber hecho nunca calistenia. Cada ejercicio tiene una progresión y empezás desde el paso que te corresponde."
+    },
+    {
+      "pregunta": "¿Hay una edad límite?",
+      "respuesta": "No. Entrenan mujeres de edades muy distintas y cada una avanza a su ritmo."
+    },
+    {
+      "pregunta": "¿Puedo hacer una clase de prueba?",
+      "respuesta": "Sí, y no tiene costo. Escribime por WhatsApp y coordinamos tu primera clase."
+    },
+    {
+      "pregunta": "¿Cuánto cuestan las clases?",
+      "respuesta": "Depende de la modalidad y de la frecuencia. Escribime por WhatsApp y te paso los valores actualizados."
+    },
+    {
+      "pregunta": "¿Qué tengo que llevar?",
+      "respuesta": "Ropa cómoda para moverte, zapatillas y agua. El resto lo ponemos nosotras."
+    },
+    {
+      "pregunta": "¿Qué pasa si llueve?",
+      "respuesta": "Si llueve, reprogramamos la clase. Avisamos el nuevo día y horario en el grupo de WhatsApp de alumnas."
+    },
+    {
+      "pregunta": "¿Las clases son solo para mujeres?",
+      "respuesta": "La mayoría del grupo son mujeres y las clases están pensadas para ellas, pero también se suma algún varón. Todas y todos arrancan desde su nivel."
+    }
+  ]
+}

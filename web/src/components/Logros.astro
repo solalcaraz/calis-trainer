@@ -1,0 +1,80 @@
+---
+import Foto from './Foto.astro';
+import VerMas from './VerMas.astro';
+import type { ItemGaleria } from '../lib/tipos';
+
+interface Props {
+  items: ItemGaleria[];
+}
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section id="logros" class="seccion" aria-labelledby="titulo-logros">
+      <div class="contenedor">
+        <div class="seccion__cabecera">
+          <p class="label">Progreso que se ve</p>
+          <h2 class="display-l" id="titulo-logros">Ellas lograron trucos desde cero</h2>
+          <p class="body-l seccion__intro">Verticales, dominadas y anillas de alumnas que empezaron sin experiencia.</p>
+        </div>
+
+        <ul class="logros" id="lista-logros" role="list">
+          {items.map((item) => (
+            <li>
+              <figure class="logro">
+                {item.tipo === 'video' && item.video ? (
+                  <video
+                    class="logro__medio"
+                    src={item.video.src}
+                    poster={item.video.poster?.src}
+                    muted
+                    loop
+                    playsinline
+                    preload={item.video.poster ? 'none' : 'metadata'}
+                    aria-label={item.video.alt}
+                    data-video-auto
+                  />
+                ) : (
+                  item.foto && <Foto class="logro__medio" imagen={item.foto} sizes="(max-width: 600px) 50vw, (max-width: 1000px) 33vw, 240px" />
+                )}
+                {item.texto && <figcaption class="small">{item.texto}</figcaption>}
+              </figure>
+            </li>
+          ))}
+        </ul>
+        <VerMas lista="lista-logros" limite={4} texto="Ver más logros" />
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .logros { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(45%, 200px), 1fr)); gap: var(--space-4); }
+  .logro { display: grid; gap: var(--space-2); }
+  .logro :global(.logro__medio) { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; background: var(--lila); }
+  .logro figcaption { color: var(--tinta-suave); }
+</style>
+
+<script>
+  // Los videos se reproducen solos, sin sonido, solo mientras están en pantalla.
+  // Con "reducir movimiento" activado no se reproducen solos: se muestran los controles.
+  const videos = document.querySelectorAll<HTMLVideoElement>('video[data-video-auto]');
+  const reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reducir || !('IntersectionObserver' in window)) {
+    videos.forEach((v) => { v.controls = true; v.preload = 'metadata'; });
+  } else {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => { v.controls = true; });
+          else v.pause();
+        });
+      },
+      { threshold: 0.4 },
+    );
+    videos.forEach((v) => observador.observe(v));
+  }
+</script>

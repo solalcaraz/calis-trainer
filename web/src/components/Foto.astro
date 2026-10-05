@@ -1,0 +1,26 @@
+---
+import type { Imagen } from '../lib/tipos';
+
+interface Props {
+  imagen: Imagen;
+  sizes: string;
+  class?: string;
+  /** true solo para la imagen principal visible al cargar */
+  prioridad?: boolean;
+}
+
+const { imagen, sizes, class: clase, prioridad = false } = Astro.props;
+---
+
+<img
+  class={clase}
+  src={imagen.src}
+  srcset={imagen.srcset}
+  sizes={sizes}
+  width={imagen.ancho}
+  height={imagen.alto}
+  alt={imagen.alt}
+  loading={prioridad ? 'eager' : 'lazy'}
+  fetchpriority={prioridad ? 'high' : 'auto'}
+  decoding="async"
+/>

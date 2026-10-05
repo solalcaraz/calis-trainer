@@ -1,0 +1,119 @@
+---
+import type { Progresion } from '../lib/tipos';
+
+interface Props {
+  progresion: Progresion;
+  linkReserva: string;
+}
+const { progresion, linkReserva } = Astro.props;
+
+const pasos = [
+  { titulo: 'Escribime por WhatsApp', texto: 'Contame qué te interesa y desde dónde arrancás.' },
+  { titulo: 'Hacés tu clase de prueba', texto: 'Venís a una clase sin costo, conocés al grupo y vemos juntas tu punto de partida.' },
+  { titulo: 'Elegimos tu plan', texto: 'Presencial, online o personalizado: armamos lo que mejor se adapta a vos.' },
+];
+
+// Alturas del componente Progression: suben de 24px a 80px.
+const n = progresion.pasos.length;
+const altura = (i: number) => Math.round(24 + (n > 1 ? (56 * i) / (n - 1) : 56));
+---
+
+<section id="como-empezar" class="seccion" aria-labelledby="titulo-como-empezar">
+  <div class="contenedor">
+    <div class="seccion__cabecera">
+      <p class="label">Cómo empezar</p>
+      <h2 class="display-l" id="titulo-como-empezar">Tres pasos y estás entrenando</h2>
+    </div>
+
+    <ol class="pasos">
+      {
+        pasos.map((p, i) => (
+          <li class="paso">
+            <span class="paso__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="h3">{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="progreso">
+      <div class="progreso__texto">
+        <h3 class="h2">Cada habilidad se construye paso a paso</h3>
+        <p>No hace falta que hoy puedas hacer una dominada. Hay una progresión para cada movimiento y empezás por el primer escalón.</p>
+        <a class="ct-btn ct-btn--secundario" href={linkReserva} target="_blank" rel="noopener">Escribime por WhatsApp</a>
+      </div>
+      <div class="ct-prog" data-prog>
+        <h4 class="ct-prog__titulo">{progresion.titulo}</h4>
+        <ol class="ct-prog__pasos" style={`--n:${n}`}>
+          {
+            progresion.pasos.map((paso, i) => (
+              <li class="ct-prog__paso" data-estado={i === 0 ? 'actual' : undefined} style={`--h:${altura(i)}px;--i:${i}`}>
+                <span class="ct-prog__num">PASO {i + 1}</span>
+                {paso}
+                {i === 0 && <span class="visualmente-oculto"> (acá empezás)</span>}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pasos { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
+  .paso { display: grid; gap: var(--space-3); align-content: start; padding-top: var(--space-6); border-top: 2px solid var(--granate-texto); }
+  .paso__num { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 1; color: var(--granate-texto); }
+
+  .progreso {
+    margin-top: var(--space-12);
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-12); align-items: center;
+    padding: var(--space-8); background: var(--magnesio-alto); border: 1px solid var(--linea);
+  }
+  .progreso__texto { display: grid; gap: var(--space-4); justify-items: start; }
+
+  /* Todos los pasos en una fila, para que siempre se lea como una escalera. */
+  .ct-prog__pasos { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+
+  /* Las barras suben una tras otra la primera vez que la escalera entra en pantalla.
+     Solo si el script marcó data-animar; sin JS o con "reducir movimiento" se ven quietas. */
+  [data-prog][data-animar] .ct-prog__paso::before {
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform .45s cubic-bezier(.2, .7, .2, 1) calc(var(--i) * 110ms);
+  }
+  [data-prog][data-animar][data-visible] .ct-prog__paso::before { transform: none; }
+
+  @media (max-width: 860px) {
+    .pasos { grid-template-columns: 1fr; gap: var(--space-6); }
+    .progreso { grid-template-columns: 1fr; gap: var(--space-8); padding: var(--space-6); }
+  }
+
+  /* En celular no entran cinco columnas: la escalera se acuesta y cada barra crece hacia la derecha. */
+  @media (max-width: 600px) {
+    .ct-prog__pasos { grid-template-columns: 1fr; gap: var(--space-3); }
+    .ct-prog__paso { display: grid; grid-template-columns: 96px auto 1fr; align-items: center; gap: var(--space-3); }
+    .ct-prog__paso::before {
+      grid-column: 1; grid-row: 1; margin: 0; height: 14px; width: calc(var(--h) * 1.2); max-width: 100%;
+    }
+    [data-prog][data-animar] .ct-prog__paso::before { transform: scaleX(0); transform-origin: left; }
+    [data-prog][data-animar][data-visible] .ct-prog__paso::before { transform: none; }
+  }
+</style>
+
+<script>
+  const escalera = document.querySelector<HTMLElement>('[data-prog]');
+  const reducir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (escalera && !reducir && 'IntersectionObserver' in window) {
+    escalera.toggleAttribute('data-animar', true);
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        escalera.toggleAttribute('data-visible', true);
+        obs.disconnect();
+      },
+      { threshold: 0.5 },
+    );
+    obs.observe(escalera);
+  }
+</script>

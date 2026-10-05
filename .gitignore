@@ -1,0 +1,15 @@
+node_modules/
+.env*
+!.env.example
+.vercel/
+
+# Web
+web/dist/
+web/.astro/
+
+# Admin
+studio/dist/
+studio/.sanity/
+
+.DS_Store
+Thumbs.db
